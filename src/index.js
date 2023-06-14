@@ -5,13 +5,13 @@ function formatDate(timestamp) {
         hours = '0${hours}'; 
     let minutes = date.getMinutes();
     if (minutes < 10) {
-        minutes = '0${minutes}'; 
+        minutes = '0${minutes}'; }
     }
     let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     let day = days[day.getDay()];
     return '${day} ${hours}:${minutes}';
 }
-iconElement.setAttribute("alt", response.data.weather[0].description);
+
 
 function displayTemperature(response) {
     
@@ -20,7 +20,7 @@ function displayTemperature(response) {
     let descriptionElement = document.querySelector("#description");
     let humidityElement = document.querySelector("#humidity");
     let windElement = document.querySelector("#wind");
-    let dateElement = document.querySelector("#date")
+    let dateElement = document.querySelector("#date");
     let iconElement = document.querySelector("#icon");
     temperatureElement.innerHTML = Math.round(response.data.main.temp);
     cityElement.innerHTML = response.data.name;
@@ -29,10 +29,22 @@ function displayTemperature(response) {
     windElement.innerHTML = Math.round(response.data.wind.speed);
     dateElement.innerHTML = timestamp(response.data.dt*1000);
     iconElement.setAttribute("src", 'https://openweathermap.org/img/wn/${resonse.data.weather[0].icon}@2x.png');
+    iconElement.setAttribute("alt", response.data.weather[0].description);
 }
 
-let apiKey = "76fb06fa46a47159706d99bfcf4c874b";
-let apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=London&appid=${apiKey}';
+function search(event) {
+    let apiKey = "76fb06fa46a47159706d99bfcf4c874b";
+    let apiUrl = 'https://api.openweathermap.org/data/2.5/weather?q=London&appid=${apiKey}';
+    axios.get(apiUrl).then(displayTemperature);
+}
 
+function handleSubmit(event) {
+    event.preventDefault();
+    let cityInputElement = document.querySelector("#city-input");
+    console.log(cityInputElement.value);
+}
 
-axios.get(apiUrl).then(displayTemperature);
+search("London");
+
+let form = document.querySelector("search-form");
+form.addEventListener("submit", handleSubmit);
